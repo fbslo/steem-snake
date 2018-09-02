@@ -1,0 +1,66 @@
+<html>
+<head>
+  <title>Steem Snake</title>
+  <!--Created by @fbslo -->
+  <meta name='Author' content='@fbslo'>
+  <meta name='description' content='Steem Snake'>
+  <meta name='keywords' content='steem, steemit, snake, cryptocurrency, game, fbslo, play, earn'>
+  <!-- alert -->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+  <meta name='refresh' content='22th April 2018, 19:12 CET'>
+  <link rel="stylesheet" type="text/css" href="https://fbslo.net/css.css">
+  <script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script>
+
+  <script>
+  steem.api.getAccounts(["steemsnake"], function(err, response){
+    var secondsago = (new Date - new Date(response[0].last_vote_time + "Z")) / 1000;
+    var vpow = response[0].voting_power + (10000 * secondsago / 432000);
+    vpow = Math.min(vpow / 100, 100).toFixed(2);
+    var vp = vpow
+    var easyvote = (0.25 * vpow)/100;
+    var normalvote = (0.5 * vpow)/100;
+    var hardvote = (1.25 * vpow)/100;
+    document.getElementById("vp").innerHTML = parseFloat(vp).toFixed(2);
+
+    document.getElementById("easy").innerHTML = parseFloat(easyvote).toFixed(2);
+    document.getElementById("normal").innerHTML = parseFloat(normalvote).toFixed(2);
+    document.getElementById("hard").innerHTML = parseFloat(hardvote).toFixed(2);
+
+    });
+  </script>
+
+
+
+</head>
+<body>
+
+<div class="form-style-8">
+  <h2><center>Steem Snake</center></h2>
+    <center><a href='/steemsnake/easy/index.html'><input type="button" value="Easy" id='Easy'/></center></a>
+    <br>
+    <center><a href='/steemsnake/normal/index.html'><input type="button" value="Normal" id='Normal'/></center></a>
+    <br>
+    <center><a href='/steemsnake/hard/index.html'><input type="button" value="Hard" id='Hard'/></center></a>
+
+    <br>
+  <center><em>Created with 	&#10084; by <a href='https://v2.steemconnect.com/sign/account-witness-vote?witness=fbslo&approve=1' style='text-decoration: none'>Steem witness </a> <a href='https://steemit.com/@fbslo' style='text-decoration: none'>@fbslo.</a></em></center>
+  <br>
+  <br>
+  <center><sup><sup>Copyright &#169; 2018 <a href="https://steemit.com/@fbslo" target="_blank" style='text-decoration: none'>@fbslo</a> All rights reserved.<p></center></sup></sup>
+
+<center>Current Vote Weight / Point
+  <br>Easy: <a id="easy">loading...</a>%
+  <br>Normal: <a id="normal">loading...</a>%
+  <br>Hard: <a id="hard">loading...</a>%
+  <br>
+  <br>Voting Power: <a id="vp">loading...</a>%
+  <br><p><br>
+  If you have any problems with SteemSnake (missing upvote on comment...), contact fbslo [Witness]#8470 on discord.
+  <br>
+  <p></p><br>
+  <h4>THIS IS STILL ALPHA</h4>
+</center>
+</div>
+</body>
+</html>

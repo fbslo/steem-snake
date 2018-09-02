@@ -1,0 +1,91 @@
+<html>
+	<head>
+		<title>Steem Snake Normal</title>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script type="text/javascript" src="jquery-1.8.2.js"></script>
+		<script type="text/javascript" src="lib.js"></script>
+		<script type="text/javascript" src="game.js"></script>
+		<script src="./steem.min.js"></script>
+    <script src="//cdn.steemjs.com/lib/latest/steem.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://fbslo.net/css.css">
+	<body style="text-align:center">
+
+		<div class="form-style-8"><center><h2>Submit Steem Snake Result - Normal</center></h2>
+	 <input type="text" id="person" placeholder="Steem Username" />
+	 <input type="password" id="key" placeholder="Posting Key" />
+	<center><input type="button" value="POST"  onClick='submit()'/></center>
+	</div>
+
+<script>
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
+var result = getUrlVars()["r"];
+
+console.log(result)
+
+function submit(){
+
+var parentAuthor = 'steemsnake';
+var parentPermlink = 'steem-snake-results';
+var commentPermlink = steem.formatter.commentPermlink(parentAuthor, parentPermlink);
+
+
+		let permlink = commentPermlink
+		var author = document.getElementById("person").value
+		var wif = document.getElementById("key").value
+		var maxAcceptedPayout = '1000000.000 SBD'
+		var percentSteemDollars = 10000
+		var allowVotes = true
+		var allowCurationRewards= true
+		var extensions = [[0, {
+						"beneficiaries": [
+								{
+										"account": "fbslo.pay",
+										"weight": 1500
+								},
+								{
+										"account": "steemsnake",
+										"weight": 3500
+								},
+						]}]]
+		var jsonMetadata = { tags: ['steem-snake'], app: 'steem-snake/0.1', mode: 'normal'}
+
+
+		var title = '';
+		var body = "My result is " + result + "! <br> Mode: Normal" ;
+		
+	
+
+		steem.broadcast.comment(wif, 'steemsnake' , 'steem-snake-results', author, permlink, title, body, jsonMetadata, function (err, result) {
+      if (err)
+        alert('Failure! ' + err);
+      else
+        alert('Success!');
+		})
+
+
+		var permlink1 = permlink
+
+		steem.broadcast.commentOptions(wif, author, permlink1, maxAcceptedPayout, percentSteemDollars, allowVotes, allowCurationRewards, extensions, function(err, result)	{
+      if (err)
+        alert('Success!');
+      else
+        alert('Success!');
+
+		});
+		
+
+}
+</script>
+
+
+
+	</body>
+</html>
