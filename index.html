@@ -18,9 +18,9 @@
     var vpow = response[0].voting_power + (10000 * secondsago / 432000);
     vpow = Math.min(vpow / 100, 100).toFixed(2);
     var vp = vpow
-    var easyvote = (0.25 * vpow)/100;
-    var normalvote = (0.5 * vpow)/100;
-    var hardvote = (1.25 * vpow)/100;
+    var easyvote = (0.124 * vpow)/100;
+    var normalvote = (0.25 * vpow)/100;
+    var hardvote = (0.75 * vpow)/100;
     document.getElementById("vp").innerHTML = parseFloat(vp).toFixed(2);
 
     document.getElementById("easy").innerHTML = parseFloat(easyvote).toFixed(2);
