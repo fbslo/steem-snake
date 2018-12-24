@@ -8,7 +8,7 @@ const donations = ['fbslo']
 
 
 
-
+//get snake's voting power
 steem.api.getAccounts(["steemsnake"], function(err, response){
   var secondsago = (new Date - new Date(response[0].last_vote_time + "Z")) / 1000;
    var vpow = response[0].voting_power + (10000 * secondsago / 432000);
@@ -17,17 +17,19 @@ steem.api.getAccounts(["steemsnake"], function(err, response){
 
 console.log('Start Steem Snake Voting Bot! Voting power: ' + vpow + "%")
 
-
+//get voting power for different play modes
 var weight_easy = Math.round(0.125 * pow)
 console.log("Weight easy/point is "+ weight_easy/100 + "%")
 var weight_normal = Math.round(0.25 * pow)
 console.log("Weight normal/point is " + weight_normal/100 + "%")
 var weight_hard = Math.round(0.75 * pow)
 console.log("Weight hard/point is " + weight_hard/100 + "%")
-
+        //voter's accoutn name and posting key
         const voter = 'voter_account'
         const wif = 'this_is_voter_password'
+        //RPC node
         steem.api.setOptions({ url: 'https://api.steemit.com' });
+        //stream tx's in Steem Blockchain
         steem.api.streamTransactions('head', function(err, result) {
           let txType = result.operations[0][0]
           let txData = result.operations[0][1]
@@ -37,24 +39,24 @@ console.log("Weight hard/point is " + weight_hard/100 + "%")
             console.log('New Comment: ', txData)
           }
         });
-
+        //check for comments
         function checkComment(txType,txData) {
           //easy
           if(txType == 'comment' && txData.permlink.includes("re-steemsnake-steem-snake-results") && txData.json_metadata.includes("easy")) {
-
+            //get result from comment
             var body1 = txData.body
             var points = body1.split(" ") && body1.split("!");
             var result = points[0]
             var code = result.split(" ")
             console.log("Result: " + code[3] + " Mode: Easy")
-
+            //get upvote weight from comment and config 
             var weight = weight_easy * code[3]
 
             let author = txData.author
             let permlink = txData.permlink
 
 
-            //donations
+            //donations: if user is on donations list, he/she get higher upvote
             if(donations.includes(txData.author)){
               var weight_donations = weight * 2
                 if (weight_donations > 10000){
@@ -65,7 +67,7 @@ console.log("Weight hard/point is " + weight_hard/100 + "%")
                 console.log("Author @" + txData.author + " donated. Voted: " + weight_donations / 100 + "%")
             }
 
-            //greylist
+            //greylist: if author is on greylist, he/she get only 1/2  of upvote
             if(greylist.includes(txData.author)){
               var weight_grey = weight * 0.5
                 if (weight_grey > 10000){
@@ -76,7 +78,7 @@ console.log("Weight hard/point is " + weight_hard/100 + "%")
                 console.log("Author @" + txData.author + " is on Greylist. Voted: " + weight_grey / 100 + "%")
             }
 
-            //blacklist
+            //blacklist: Author don't get upvote
             if(blacklist.includes(txData.author)){
               var weight_black = 0
               steem.broadcast.vote(wif,voter,author,permlink,weight_black,console.log);
@@ -95,7 +97,7 @@ console.log("Weight hard/point is " + weight_hard/100 + "%")
             }
 
 
-          //normal
+          //normal mode
           if(txType == 'comment' && txData.permlink.includes("re-steemsnake-steem-snake-results") && txData.json_metadata.includes("normal")) {
 
             var body1 = txData.body
