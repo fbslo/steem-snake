@@ -1,4 +1,5 @@
 var steem = require('steem'); //get steemsj --> npm install steem --save
+steem.api.setOptions({ url: 'https://api.hive.blog' });
 
 const greylist = ['steem', 'darlene.kitchen', ]
 
